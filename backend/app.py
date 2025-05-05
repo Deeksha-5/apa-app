@@ -9,7 +9,8 @@ from azure.storage.blob import BlobServiceClient
 import json
 from functools import wraps
 import ast
-from dotenv import load_dotenv
+from dotenv import load_
+dotenv
 from io import BytesIO
 
 load_dotenv()
@@ -20,8 +21,8 @@ CORS(app)  # Enable CORS for all routes
 # Initialize Azure Blob Storage
 blob_service_client = None
 try:
-    if os.getenv('AZURE_STORAGE_CONNECTION_STRING'):
-        blob_service_client = BlobServiceClient.from_connection_string(os.getenv('AZURE_STORAGE_CONNECTION_STRING'))
+    if os.environ.get('AZURE_STORAGE_CONNECTION_STRING'):
+        blob_service_client = BlobServiceClient.from_connection_string(os.environ.get('AZURE_STORAGE_CONNECTION_STRING'))
 except Exception as e:
     print(f"Azure storage initialization error: {e}")
 
@@ -49,7 +50,7 @@ def token_required(f):
         if not token:
             return jsonify({'message': 'Token is missing!'}), 401
         
-        if token != f"Bearer {os.getenv('SECRET_KEY')}":
+        if token != f"Bearer {os.environ.get('SECRET_KEY')}":
             return jsonify({'message': 'Invalid token!'}), 401
             
         return f(*args, **kwargs)
@@ -64,12 +65,12 @@ def upload_excel_to_azure(data, file_name):
     try:
         # Create container if it doesn't exist
         try:
-            container_client = blob_service_client.get_container_client(os.getenv('CONTAINER_NAME'))
+            container_client = blob_service_client.get_container_client(os.environ.get('CONTAINER_NAME'))
             if not container_client.exists():
-                container_client = blob_service_client.create_container(os.getenv('CONTAINER_NAME'))
+                container_client = blob_service_client.create_container(os.environ.get('CONTAINER_NAME'))
         except Exception as e:
             print(f"Container creation error: {e}")
-            container_client = blob_service_client.create_container(os.getenv('CONTAINER_NAME'))
+            container_client = blob_service_client.create_container(os.environ.get('CONTAINER_NAME'))
         
         # Convert data to Excel and upload
         df = pd.DataFrame(data)
@@ -87,7 +88,7 @@ def download_excel_from_azure(file_name):
         return None
     
     try:
-        container_client = blob_service_client.get_container_client(os.getenv('CONTAINER_NAME'))
+        container_client = blob_service_client.get_container_client(os.environ.get('CONTAINER_NAME'))
         blob_client = container_client.get_blob_client(file_name)
         if not blob_client.exists():
             return None
@@ -105,10 +106,10 @@ def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    if username == os.getenv('ADMIN_USERNAME') and password == os.getenv('ADMIN_PASSWORD'):
+    if username == os.environ.get('ADMIN_USERNAME') and password == os.environ.get('ADMIN_PASSWORD'):
         return jsonify({
             'message': 'Login successful',
-            'token': f"Bearer {os.getenv('SECRET_KEY')}"
+            'token': f"Bearer {os.environ.get('SECRET_KEY')}"
         })
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
