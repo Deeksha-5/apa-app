@@ -9,10 +9,7 @@ from azure.storage.blob import BlobServiceClient
 import json
 from functools import wraps
 import ast
-from dotenv import load_dotenv
 from io import BytesIO
-
-load_dotenv()
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes

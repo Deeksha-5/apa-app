@@ -3,3 +3,4 @@ flask-cors
 pandas
 azure-storage-blob
 openpyxl
+python-dotenv
