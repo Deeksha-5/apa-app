@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aakansh Physics Academy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 10px 10px 0 0 !important;
+            padding: 20px;
+        }
+
+        .btn {
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all var(--transition-speed);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #3db8de;
+            border-color: #3db8de;
+        }
+
+        .btn-outline-danger {
+            color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .btn-outline-danger:hover {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            transition: all var(--transition-speed);
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+        }
+
+        .nav-tabs {
+            border-bottom: none;
+            margin-bottom: 30px;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-right: 10px;
+            transition: all var(--transition-speed);
+        }
+
+        .nav-tabs .nav-link:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: white;
+            background-color: var(--primary-color);
+            border: none;
+        }
+
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background-color: white;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: var(--light-bg);
+            border-bottom: none;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .table tbody td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.01);
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 20px 25px;
+        }
+
+        .modal-footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 20px 25px;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            margin-right: 5px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section-content {
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .badge {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Status indicators */
+        .status-paid {
+            background-color: rgba(76, 201, 240, 0.1);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .status-pending {
+            background-color: rgba(247, 37, 133, 0.1);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+
+        .login-container {
+            max-width: 450px;
+            margin: 80px auto;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .login-card {
+            padding: 30px;
+        }
+
+        .app-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .nav-item {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginSection">
+            <div class="login-container">
+                <div class="login-header">
+                    <h2>
+                        <!-- <i class="fas fa-graduation-cap me-2"></i> -->
+                         <img src="images/logo.png" alt="Company Logo" style="height: 50px; margin-right: 5px; vertical-align: middle;">
+                        APA Management
+                    </h2>
+                    <p class="text-muted">Please login to access the system</p>
+                </div>
+                <div class="card login-card">
+                    <form id="loginForm">
+                        <div class="mb-4">
+                            <label for="username" class="form-label">Username</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-user text-muted"></i></span>
+                                <input type="text" class="form-control" id="username" placeholder="Enter your username"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-lock text-muted"></i></span>
+                                <input type="password" class="form-control" id="password"
+                                    placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-sign-in-alt me-2"></i>Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application (hidden initially) -->
+        <div id="appSection" class="hidden">
+            <div class="page-header">
+                <h1 class="app-title">
+                    <!-- <i class="fas fa-graduation-cap me-2"></i> -->
+                     <img src="images/logo.png" alt="Company Logo" style="height: 70px; margin-right: 5px; vertical-align: middle;">
+                    Aakansh Physics Academy
+                </h1>
+                <button id="logoutBtn" class="btn btn-danger">
+                    <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+            </div>
+
+            <!-- Navigation -->
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" data-section="students">
+                        <i class="fas fa-users me-2"></i>Students
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="attendance">
+                        <i class="fas fa-clipboard-check me-2"></i>Attendance
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="fees">
+                        <i class="fas fa-rupee-sign me-2"></i>Manage Fees
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Students Section -->
+            <div id="students" class="section-content">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control" id="studentSearch"
+                                placeholder="Search for students...">
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button id="addStudentBtn" class="btn btn-primary">
+                            <i class="fas fa-plus me-2"></i>Add New Student
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user me-2"></i>Name</th>
+                                <th><i class="fas fa-book me-2"></i>Standard</th>
+                                <th><i class="fas fa-graduation-cap me-2"></i>Course</th>
+                                <th><i class="fas fa-users me-2"></i>Batch</th>
+                                <th><i class="fas fa-phone me-2"></i>Contact</th>
+                                <th><i class="fas fa-cog me-2"></i>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Students will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendance" class="section-content hidden">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="attendanceDate" class="form-label">Date</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fas fa-calendar text-muted"></i></span>
+                                    <input type="date" id="attendanceDate" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="attendanceBatch" class="form-label">Batch</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fas fa-users text-muted"></i></span>
+                                    <select id="attendanceBatch" class="form-select">
+                                        <option value="">Select Batch</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button id="loadAttendanceBtn" class="btn btn-primary me-2">
+                                    <i class="fas fa-sync-alt me-2"></i>Load Students
+                                </button>
+                                <button id="saveAttendanceBtn" class="btn btn-success" disabled>
+                                    <i class="fas fa-save me-2"></i>Save Attendance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><i class="fas fa-user me-2"></i>Name</th>
+                                <th><i class="fas fa-book me-2"></i>Standard</th>
+                                <th><i class="fas fa-check-circle me-2"></i>Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Attendance will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fees Management Section -->
+            <div id="fees" class="section-content hidden">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="feesStudent" class="form-label">Select Student</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fas fa-user-graduate text-muted"></i></span>
+                                    <select id="feesStudent" class="form-select">
+                                        <option value="">Select Student</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <button id="loadFeesBtn" class="btn btn-primary">
+                                    <i class="fas fa-file-invoice-dollar me-2"></i>Load Fee Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="feeDetails" class="hidden">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Fee Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-0">
+                                        <div class="card-body">
+                                            <h6 class="text-muted mb-2">Total Fee</h6>
+                                            <h3 class="mb-0">₹<span id="totalFee">0</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-0">
+                                        <div class="card-body">
+                                            <h6 class="text-muted mb-2">Paid Amount</h6>
+                                            <h3 class="mb-0 text-success">₹<span id="paidFee">0</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card bg-light mb-0">
+                                        <div class="card-body">
+                                            <h6 class="text-muted mb-2">Balance</h6>
+                                            <h3 class="mb-0 text-danger">₹<span id="balanceFee">0</span></h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Payment History</h5>
+                        <button id="addPaymentBtn" class="btn btn-success">
+                            <i class="fas fa-plus me-2"></i>Add Payment
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-calendar me-2"></i>Date</th>
+                                    <th><i class="fas fa-rupee-sign me-2"></i>Amount</th>
+                                    <th><i class="fas fa-credit-card me-2"></i>Mode</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody">
+                                <!-- Payments will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Form Modal -->
+        <div class="modal fade" id="studentModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="studentModalTitle">
+                            <i class="fas fa-user-plus me-2"></i>Add New Student
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="studentForm">
+                            <input type="hidden" id="studentId">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentName" class="form-label">Student Name</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-user text-muted"></i></span>
+                                        <input type="text" class="form-control" id="studentName"
+                                            placeholder="Enter full name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studentStandard" class="form-label">Standard</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-book text-muted"></i></span>
+                                        <select class="form-select" id="studentStandard" required>
+                                            <option value="">Select Standard</option>
+                                            <option value="11th">11th</option>
+                                            <option value="12th">12th</option>
+                                            <option value="dropper">Dropper</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentSchool" class="form-label">School Name</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-school text-muted"></i></span>
+                                        <input type="text" class="form-control" id="studentSchool"
+                                            placeholder="Enter school name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studentCourse" class="form-label">Course Opted</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-graduation-cap text-muted"></i></span>
+                                        <select class="form-select" id="studentCourse" required>
+                                            <option value="">Select Course</option>
+                                            <option value="CBSE">CBSE</option>
+                                            <option value="CBSE+JEE">CBSE+JEE</option>
+                                            <option value="CBSE+NEET">CBSE+NEET</option>
+                                            <option value="JEE Only">JEE Only</option>
+                                            <option value="NEET Only">NEET Only</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="guardianName" class="form-label">Guardian's Name</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-user-shield text-muted"></i></span>
+                                        <input type="text" class="form-control" id="guardianName"
+                                            placeholder="Enter guardian's name" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardianContact" class="form-label">Guardian's Contact Number</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-phone text-muted"></i></span>
+                                        <input type="text" class="form-control" id="guardianContact"
+                                            placeholder="Enter contact number" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentEmail" class="form-label">Student's Email ID</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-envelope text-muted"></i></span>
+                                        <input type="email" class="form-control" id="studentEmail"
+                                            placeholder="Enter email address" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studentBatch" class="form-label">Batch Opted</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text bg-white"><i
+                                                class="fas fa-users text-muted"></i></span>
+                                        <select class="form-select" id="studentBatch" required>
+                                            <option value="">Select Batch</option>
+                                            <option value="MWF">MWF</option>
+                                            <option value="TTS">TTS</option>
+                                            <option value="Weekend">Weekend</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" id="saveStudentBtn">
+                            <i class="fas fa-save me-2"></i>Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal fade" id="paymentModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fas fa-money-bill-wave me-2"></i>Record Payment
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="paymentForm">
+                            <div class="mb-3">
+                                <label for="paymentDate" class="form-label">Payment Date</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fas fa-calendar text-muted"></i></span>
+                                    <input type="date" class="form-control" id="paymentDate" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="paymentAmount" class="form-label">Amount</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fas fa-rupee-sign text-muted"></i></span>
+                                    <input type="number" class="form-control" id="paymentAmount"
+                                        placeholder="Enter amount" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="paymentMode" class="form-label">Payment Mode</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-white"><i
+                                            class="fas fa-credit-card text-muted"></i></span>
+                                    <select class="form-select" id="paymentMode" required>
+                                        <option value="Cash">Cash</option>
+                                        <option value="UPI">UPI</option>
+                                        <option value="Bank Transfer">Bank Transfer</option>
+                                        <option value="Check">Check</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancel
+                        </button>
+                        <button type="button" class="btn btn-primary" id="savePaymentBtn">
+                            <i class="fas fa-save me-2"></i>Save Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+
+</body>
+
+</html>
+
+<!-- JavaScript -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
+<!-- <script> -->
+<!-- document.addEventListener('DOMContentLoaded', function() {
+        // Sample data for demonstration
+        const studentsData = [
+            { id: 1, name: 'Rahul Sharma', standard: '12th', school: 'DPS School', course: 'CBSE+JEE', batch: 'Morning', email: 'rahul@example.com', guardianName: 'Anil Sharma', guardianContact: '9876543210' },
+            { id: 2, name: 'Priya Patel', standard: '11th', school: 'St. Xavier\'s', course: 'CBSE+NEET', batch: 'Evening', email: 'priya@example.com', guardianName: 'Rakesh Patel', guardianContact: '8765432109' },
+            { id: 3, name: 'Amit Kumar', standard: 'dropper', school: 'N/A', course: 'JEE Only', batch: 'Weekend', email: 'amit@example.com', guardianName: 'Rajesh Kumar', guardianContact: '7654321098' }
+        ];
+
+        const feesData = {
+            1: { totalFee: 45000, payments: [
+                { date: '2025-01-15', amount: 15000, mode: 'Cash' },
+                { date: '2025-02-15', amount: 15000, mode: 'UPI' }
+            ]},
+            2: { totalFee: 50000, payments: [
+                { date: '2025-01-10', amount: 25000, mode: 'Bank Transfer' }
+            ]},
+            3: { totalFee: 35000, payments: [
+                { date: '2025-01-05', amount: 35000, mode: 'Check' }
+            ]}
+        };
+
+        const attendanceData = {
+            '2025-04-25': {
+                'Morning': { 1: true },
+                'Evening': { 2: true },
+                'Weekend': { 3: false }
+            }
+        };
+
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const appSection = document.getElementById('appSection');
+        const loginForm = document.getElementById('loginForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section-content');
+        
+        // Students Section
+        const studentsTableBody = document.getElementById('studentsTableBody');
+        const addStudentBtn = document.getElementById('addStudentBtn');
+        const saveStudentBtn = document.getElementById('saveStudentBtn');
+        const studentSearch = document.getElementById('studentSearch');
+        
+        // Attendance Section
+        const attendanceDate = document.getElementById('attendanceDate');
+        const attendanceBatch = document.getElementById('attendanceBatch');
+        const attendanceTableBody = document.getElementById('attendanceTableBody');
+        const loadAttendanceBtn = document.getElementById('loadAttendanceBtn');
+        const saveAttendanceBtn = document.getElementById('saveAttendanceBtn');
+        
+        // Fees Section
+        const feesStudent = document.getElementById('feesStudent');
+        const loadFeesBtn = document.getElementById('loadFeesBtn');
+        const feeDetails = document.getElementById('feeDetails');
+        const totalFee = document.getElementById('totalFee');
+        const paidFee -->

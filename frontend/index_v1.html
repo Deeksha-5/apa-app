@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        .nav-item {
+            cursor: pointer;
+        }
+        .table-container {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginSection" class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Admin Login</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" required>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application (hidden initially) -->
+        <div id="appSection" class="hidden">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h1 class="text-center">Student Management System</h1>
+                    <button id="logoutBtn" class="btn btn-sm btn-outline-danger float-end">Logout</button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" data-section="students">Students</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="attendance">Attendance</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-section="fees">Fees Management</a>
+                </li>
+            </ul>
+
+            <!-- Students Section -->
+            <div id="students" class="section-content">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <button id="addStudentBtn" class="btn btn-success">Add New Student</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Standard</th>
+                                <th>Course</th>
+                                <th>Batch</th>
+                                <th>Contact</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody">
+                            <!-- Students will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Attendance Section -->
+            <div id="attendance" class="section-content hidden">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="attendanceDate" class="form-label">Date</label>
+                        <input type="date" id="attendanceDate" class="form-control" value="">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="attendanceBatch" class="form-label">Batch</label>
+                        <select id="attendanceBatch" class="form-select">
+                            <option value="">Select Batch</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button id="loadAttendanceBtn" class="btn btn-primary me-2">Load Students</button>
+                        <button id="saveAttendanceBtn" class="btn btn-success" disabled>Save Attendance</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Standard</th>
+                                <th>Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="attendanceTableBody">
+                            <!-- Attendance will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fees Management Section -->
+            <div id="fees" class="section-content hidden">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="feesStudent" class="form-label">Select Student</label>
+                        <select id="feesStudent" class="form-select">
+                            <option value="">Select Student</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button id="loadFeesBtn" class="btn btn-primary">Load Fee Details</button>
+                    </div>
+                </div>
+                <div id="feeDetails" class="hidden">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5>Fee Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <p><strong>Total Fee:</strong> ₹<span id="totalFee">0</span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Paid:</strong> ₹<span id="paidFee">0</span></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <p><strong>Balance:</strong> ₹<span id="balanceFee">0</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <button id="addPaymentBtn" class="btn btn-success">Add Payment</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Mode</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentsTableBody">
+                                <!-- Payments will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Form Modal -->
+        <div class="modal fade" id="studentModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="studentModalTitle">Add New Student</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="studentForm">
+                            <input type="hidden" id="studentId">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentName" class="form-label">Student Name</label>
+                                    <input type="text" class="form-control" id="studentName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studentStandard" class="form-label">Standard</label>
+                                    <select class="form-select" id="studentStandard" required>
+                                        <option value="">Select Standard</option>
+                                        <option value="11th">11th</option>
+                                        <option value="12th">12th</option>
+                                        <option value="dropper">Dropper</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentSchool" class="form-label">School Name</label>
+                                    <input type="text" class="form-control" id="studentSchool">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studentCourse" class="form-label">Course Opted</label>
+                                    <select class="form-select" id="studentCourse" required>
+                                        <option value="">Select Course</option>
+                                        <option value="CBSE">CBSE</option>
+                                        <option value="CBSE+JEE">CBSE+JEE</option>
+                                        <option value="CBSE+NEET">CBSE+NEET</option>
+                                        <option value="JEE Only">JEE Only</option>
+                                        <option value="NEET Only">NEET Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="guardianName" class="form-label">Guardian's Name</label>
+                                    <input type="text" class="form-control" id="guardianName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="guardianContact" class="form-label">Guardian's Contact Number</label>
+                                    <input type="text" class="form-control" id="guardianContact" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="studentEmail" class="form-label">Student's Email ID</label>
+                                    <input type="email" class="form-control" id="studentEmail" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="studentBatch" class="form-label">Batch Opted</label>
+                                    <input type="text" class="form-control" id="studentBatch" required>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="saveStudentBtn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal fade" id="paymentModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Record Payment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="paymentForm">
+                            <div class="mb-3">
+                                <label for="paymentDate" class="form-label">Payment Date</label>
+                                <input type="date" class="form-control" id="paymentDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="paymentAmount" class="form-label">Amount</label>
+                                <input type="number" class="form-control" id="paymentAmount" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="paymentMode" class="form-label">Payment Mode</label>
+                                <select class="form-select" id="paymentMode" required>
+                                    <option value="Cash">Cash</option>
+                                    <option value="UPI">UPI</option>
+                                    <option value="Bank Transfer">Bank Transfer</option>
+                                    <option value="Check">Check</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="savePaymentBtn">Save Payment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
