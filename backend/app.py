@@ -18,6 +18,7 @@ CORS(app)  # Enable CORS for all routes
 blob_service_client = None
 try:
     if os.environ.get('AZURE_STORAGE_CONNECTION_STRING'):
+        print(os.environ.get('AZURE_STORAGE_CONNECTION_STRING'))
         blob_service_client = BlobServiceClient.from_connection_string(os.environ.get('AZURE_STORAGE_CONNECTION_STRING'))
 except Exception as e:
     print(f"Azure storage initialization error: {e}")
@@ -147,7 +148,9 @@ def register_student():
         'batch': data['batch'],
         'registrationDate': registration_date
     }
-    
+    students_data = download_excel_from_azure('students.xlsx')
+    fees_data = download_excel_from_azure('fees.xlsx')
+
     students_data.append(new_student)
     
     # Initialize fee record for this student
@@ -251,8 +254,10 @@ def delete_student(student_id):
 @token_required
 def get_batches():
     batches = set()
+    students_data = download_excel_from_azure('students.xlsx')
     for student in students_data:
         batches.add(student['batch'])
+    print(list(batches))
     return jsonify(list(batches))
 
 @app.route('/api/attendance', methods=['POST'])
@@ -262,7 +267,7 @@ def mark_attendance():
     date = data.get('date')
     batch = data.get('batch')
     attendance_records = data.get('attendance', {})
-    
+    attendance_data = download_excel_from_azure('attendance.xlsx')
     if not date or not batch or not attendance_records:
         return jsonify({'message': 'Missing required fields'}), 400
     
@@ -300,6 +305,7 @@ def mark_attendance():
 @token_required
 def get_attendance(batch):
     # Get students in this batch
+    students_data = download_excel_from_azure('students.xlsx')
     batch_students = [s for s in students_data if s['batch'] == batch]
     
     # Filter attendance data for this batch
@@ -327,6 +333,8 @@ def get_attendance(batch):
 @token_required
 def get_student_fees(student_id):
     # Find fee record for student
+    fees_data = download_excel_from_azure('fees.xlsx')
+    fee_payments_data = download_excel_from_azure('fee_payments.xlsx')
     fee_record = next((fee for fee in fees_data if fee['studentId'] == student_id), None)
     if not fee_record:
         return jsonify({'message': 'Student fee record not found'}), 404
@@ -346,6 +354,8 @@ def get_student_fees(student_id):
 @token_required
 def record_fee_payment(student_id):
     # Find fee record for student
+    fees_data = download_excel_from_azure('fees.xlsx')
+    fee_payments_data = download_excel_from_azure('fee_payments.xlsx')
     fee_record = next((fee for i, fee in enumerate(fees_data) if fee['studentId'] == student_id), None)
     fee_index = next((i for i, fee in enumerate(fees_data) if fee['studentId'] == student_id), -1)
     
@@ -421,4 +431,4 @@ def initialize_data():
 
 if __name__ == '__main__':
     initialize_data()
-    app.run(debug=False, host='127.0.0.1', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
