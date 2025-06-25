@@ -244,6 +244,10 @@ def delete_student(student_id):
             # Delete attendance records
             attendance_data[:] = [record for record in attendance_data if record['studentId'] != student_id]
             
+            # print(students_data)
+            # print(fees_data)
+            # print(fee_payments_data)
+            # print(attendance_data)
             # Upload updated data to Azure
             upload_excel_to_azure(students_data, 'students.xlsx')
             upload_excel_to_azure(fees_data, 'fees.xlsx')
