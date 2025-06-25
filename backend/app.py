@@ -227,6 +227,10 @@ def update_student(student_id):
 @app.route('/api/students/<student_id>', methods=['DELETE'])
 @token_required
 def delete_student(student_id):
+    students_data = download_excel_from_azure('students.xlsx')
+    fees_data = download_excel_from_azure('fees.xlsx')
+    fee_payments_data = download_excel_from_azure('fee_payments.xlsx')
+    attendance_data = download_excel_from_azure('attendance.xlsx')
     for i, student in enumerate(students_data):
         if student['id'] == student_id:
             del students_data[i]
