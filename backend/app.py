@@ -71,10 +71,16 @@ def upload_excel_to_azure(data, file_name):
         
         # Convert data to Excel and upload
         df = pd.DataFrame(data)
-        df.to_excel(file_name, index=False)
-        with open(file_name, "rb") as data:
-            blob_client = container_client.get_blob_client(file_name)
-            blob_client.upload_blob(data, overwrite=True)
+        excel_buffer = BytesIO()
+        df.to_excel(excel_buffer, index=False, engine='openpyxl')
+        excel_buffer.seek(0)
+        excel_data = excel_buffer.getvalue()
+        blob_client = container_client.get_blob_client(file_name)
+        blob_client.upload_blob(excel_data, overwrite=True)
+        # df.to_excel(file_name, index=False)
+        # with open(file_name, "rb") as data:
+        #     blob_client = container_client.get_blob_client(file_name)
+        #     blob_client.upload_blob(data, overwrite=True)
         print(f"Successfully uploaded {file_name} to Azure")
     except Exception as e:
         print(f"Error uploading to Azure: {e}")
@@ -92,6 +98,7 @@ def download_excel_from_azure(file_name):
             
         downloaded_blob = blob_client.download_blob()
         df = pd.read_excel(BytesIO(downloaded_blob.readall()))
+        print(f"Successfully downloaded {file_name} from Azure")
         return df.to_dict('records')
     except Exception as e:
         print(f"Error downloading from Azure: {e}")

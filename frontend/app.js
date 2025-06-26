@@ -1,5 +1,5 @@
 // API URL - Change this to match your backend URL
-const API_URL = 'https://apa-server.vercel.app/api';
+const API_URL = 'http://127.0.0.1:5000/api';
 
 // DOM Elements
 const loginSection = document.getElementById('loginSection');
